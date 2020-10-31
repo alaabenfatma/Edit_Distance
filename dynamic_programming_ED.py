@@ -4,32 +4,37 @@ from generator import randomword
 
 def dynamic_programming(string_1, string_2):
     """
-    solve the edit distance problem with dynamic programming.
+    Solve the edit distance problem with dynamic programming.
     :param string_1:
     :param string_2:
     :return: edit_distance between string1 and string2, transformation of string1.
     """
 
-    edit_distance = np.zeros((len(string_1) + 1, len(string_2) + 1))  # row string2, column string1
-    edit_distance[::, 0] = range(0, len(string_1) + 1)  # first column
-    edit_distance[0, ::] = range(0, len(string_2) + 1)  # first row
+    n = len(string_1)
+    m = len(string_2)
 
-    matrix_operations = np.zeros((len(string_1) + 1, len(string_2) + 1))
+    # row string2, column string1
+    edit_distance = np.zeros((n + 1, m + 1))
+    edit_distance[::, 0] = range(0, n + 1)  # first column
+    edit_distance[0, ::] = range(0, m + 1)  # first row
+
+    matrix_operations = np.zeros((n + 1, m + 1))
     matrix_operations[1:, 0] = 2  # means remove operations
     matrix_operations[0, 1:] = 3  # means insert operations
-
-    for i in range(1, len(string_1) + 1):
-        for j in range(1, len(string_2) + 1):
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
             if string_1[i - 1] == string_2[j - 1]:
                 edit_distance[i, j] = edit_distance[i - 1, j - 1]
                 matrix_operations[i, j] = 1
             else:
                 edit_distance[i, j] = 1 + min(edit_distance[i - 1, j],  # remove
-                                              edit_distance[i, j - 1],  # insert
+                                              # insert
+                                              edit_distance[i, j - 1],
                                               edit_distance[i - 1, j - 1])  # replace
-                update_matrix_operations(matrix_operations, edit_distance, i, j)
+                update_matrix_operations(
+                    matrix_operations, edit_distance, i, j)
     print(print_path(string_1, string_2, matrix_operations))
-    return edit_distance[len(string_1), len(string_2)], print_path(string_1, string_2, matrix_operations)
+    return edit_distance[n, m], print_path(string_1, string_2, matrix_operations, False)
 
 
 def update_matrix_operations(path, edit_distance, i, j):
@@ -44,12 +49,12 @@ def update_matrix_operations(path, edit_distance, i, j):
         path[i, j] = 2
     elif edit_distance[i, j] - 1 == edit_distance[i, j - 1]:  # insert
         path[i, j] = 3
-    else: #replace
+    else:  # replace
         path[i, j] = 4
     return
 
 
-def print_path(string_1, string_2, matrix_operations):
+def print_path(string_1, string_2, matrix_operations, with_colors=True):
     """
     red means replace
     blue means insert
@@ -58,15 +63,15 @@ def print_path(string_1, string_2, matrix_operations):
     :param matrix_operations:
     :return: the transformation of string1 in string2 with the steps.
     """
-    color_red = '\033[91m'
-    color_blue = '\033[94m'
-    color_purple = '\033[95m'
-
-    color_end = '\033[0m'
+    color_red = '\033[91m' if with_colors else '-'
+    color_blue = '\033[94m' if with_colors else '+'
+    color_purple = '\033[95m' if with_colors else ''
+    color_end = '\033[0m' if with_colors else ''
 
     new_string = ""
     i = len(string_1)
     j = len(string_2)
+
     while (i, j) != (0, 0):
         if matrix_operations[i, j] == 1:  # identical symbol
             new_string = string_1[i - 1] + new_string
@@ -86,7 +91,7 @@ def print_path(string_1, string_2, matrix_operations):
 
 
 if __name__ == '__main__':
-    string1 = randomword(30)
-    string2 = randomword(30)
+    string1 = 'cas'
+    string2 = 'carpet'
     print("Two randoms strings : ", string1, string2)
     print(dynamic_programming(string1, string2))
