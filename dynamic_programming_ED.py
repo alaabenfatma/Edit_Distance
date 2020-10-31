@@ -44,7 +44,7 @@ def update_matrix_operations(path, edit_distance, i, j):
         path[i, j] = 2
     elif edit_distance[i, j] - 1 == edit_distance[i, j - 1]:  # insert
         path[i, j] = 3
-    else:
+    else: #replace
         path[i, j] = 4
     return
 
