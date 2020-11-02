@@ -5,7 +5,7 @@ str2 = generator.randomword(5)
 print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 # replace can cost either 1 (insert a character on top of another) or 2 (remove a character and then insert the new one)
-replace_add_cost = 0 #case where replace is 1 operation (= 1 otherwise)
+replace_add_cost = 0    # case where replace is 1 operation (= 1 otherwise)
 
 
 def ed(s1, s2, n, m):
