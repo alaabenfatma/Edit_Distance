@@ -5,8 +5,9 @@ Things to keep in mind:
 '''
 from generator import randomword
 
-str1 = 'x'
-str2 = 'x'
+str1 = 'QrLZNMZ3Egrd'
+str2 = 'w0T3QpRLGn'
+print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 i = 0
 
@@ -39,4 +40,4 @@ def bounded_ed(a, b, currentDistance, lowerBound):
     return min(insertionBranch, deletionBranch, replaceBranch)
 
 
-print(bounded_ed(str1, str2, 0, max(len(str1), len(str2))), i)
+print(f'The edit distance equals: {bounded_ed(str1, str2, 0, max(len(str1), len(str2)))} after {i} operations.')
