@@ -1,7 +1,7 @@
 import generator
 
-str1 = 'x'
-str2 = 'x'
+str1 = 'QrLZNMZ3Egrd'
+str2 = 'w0T3QpRLGn'
 print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 # replace can cost either 1 (insert a character on top of another) or 2 (remove a character and then insert the new one)
@@ -12,7 +12,7 @@ i = 0
 def ed(s1, s2, n, m):
     global i
     i += 1
-    if(s1 == s2):
+    if (s1 == s2):
         return 0
     if (n == 0):
         return m
@@ -27,4 +27,6 @@ def ed(s1, s2, n, m):
         return 1 + min(insertionBranch, deletionBranch, replaceBranch)
 
 
-print(f'The edit distance equals: {ed(str1, str2, len(str1), len(str2))}', i)
+print(
+    f'The edit distance equals: {ed(str1, str2, len(str1), len(str2))} after {i} operations.'
+)
