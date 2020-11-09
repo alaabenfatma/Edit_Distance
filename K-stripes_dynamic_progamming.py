@@ -4,7 +4,9 @@ from math import inf
 
 def K_stripes_DP_ED(string_1, string_2, K):
     """
-    -> pour que l'algo trouve la solution optimale et l'alignement K <= |n - m|
+    Solve the edit distance problem with a K-stripes dynamic programming appoach (a matrix with only a stripe of size K around the diagonal of the matrix).
+    for the 
+    -> So that the algo finds the optimal solution and alignment K <= |n - m|
     :param string_1:
     :param string_2:
     :param K:
