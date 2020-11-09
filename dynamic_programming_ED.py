@@ -63,10 +63,11 @@ def print_path(string_1, string_2, matrix_operations, with_colors=True):
     :param matrix_operations:
     :return: the transformation of string1 in string2 with the steps.
     """
-    color_red = '\033[91m' if with_colors else '-'
-    color_blue = '\033[94m' if with_colors else '+'
-    color_purple = '\033[95m' if with_colors else ''
-    color_end = '\033[0m' if with_colors else ''
+
+    color_red = '\033[91m'
+    color_blue = '\033[94m'
+    color_purple = '\033[95m'
+    color_end = '\033[0m'
 
     new_string = ""
     i = len(string_1)
@@ -74,24 +75,36 @@ def print_path(string_1, string_2, matrix_operations, with_colors=True):
 
     while (i, j) != (0, 0):
         if matrix_operations[i, j] == 1:  # identical symbol
-            new_string = string_1[i - 1] + new_string
+            if with_colors:
+                new_string = string_1[i - 1] + new_string
+            else:
+                new_string = 'identical (' + string_1[i - 1] + '); ' + new_string
             i -= 1
             j -= 1
         elif matrix_operations[i, j] == 2:  # remove
-            new_string = color_purple + "_" + color_end + new_string
+            if with_colors:
+                new_string = color_purple + "_" + color_end + new_string
+            else:
+                new_string = 'remove(' + string_1[i - 1] + '); ' + new_string
             i -= 1
         elif matrix_operations[i, j] == 3:  # insert
-            new_string = color_blue + string_2[j - 1] + color_end + new_string
+            if with_colors:
+                new_string = color_blue + string_2[j - 1] + color_end + new_string
+            else:
+                new_string = 'insert(' + string_2[j - 1] + '); ' + new_string
             j -= 1
         elif matrix_operations[i, j] == 4:  # replace
-            new_string = color_red + string_2[j - 1] + color_end + new_string
+            if with_colors:
+                new_string = color_red + string_2[j - 1] + color_end + new_string
+            else:
+                new_string = 'replace(' + string_1[i - 1] + ' by ' + string_2[j - 1] + '); ' + new_string
             i -= 1
             j -= 1
     return new_string
 
 
 if __name__ == '__main__':
-    string1 = 'cas'
-    string2 = 'carpet'
+    string1 = 'hello world'
+    string2 = 'hello boy !'
     print("Two randoms strings : ", string1, string2)
     print(dynamic_programming(string1, string2))
