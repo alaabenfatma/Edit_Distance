@@ -74,32 +74,36 @@ def print_path(string_1, string_2, matrix_operations, with_colors=True):
     j = len(string_2)
 
     while (i, j) != (0, 0):
-        if matrix_operations[i, j] == 1:  # identical symbol
-            if with_colors:
+        if with_colors:
+            if matrix_operations[i, j] == 1:  # identical symbol
                 new_string = string_1[i - 1] + new_string
-            else:
-                new_string = 'identical (' + string_1[i - 1] + '); ' + new_string
-            i -= 1
-            j -= 1
-        elif matrix_operations[i, j] == 2:  # remove
-            if with_colors:
+                i -= 1
+                j -= 1
+            elif matrix_operations[i, j] == 2:  # remove
                 new_string = color_purple + "_" + color_end + new_string
-            else:
-                new_string = 'remove(' + string_1[i - 1] + '); ' + new_string
-            i -= 1
-        elif matrix_operations[i, j] == 3:  # insert
-            if with_colors:
+                i -= 1
+            elif matrix_operations[i, j] == 3:  # insert
                 new_string = color_blue + string_2[j - 1] + color_end + new_string
-            else:
-                new_string = 'insert(' + string_2[j - 1] + '); ' + new_string
-            j -= 1
-        elif matrix_operations[i, j] == 4:  # replace
-            if with_colors:
+                j -= 1
+            elif matrix_operations[i, j] == 4:  # replace
                 new_string = color_red + string_2[j - 1] + color_end + new_string
-            else:
+                i -= 1
+                j -= 1
+        else:
+            if matrix_operations[i, j] == 1:  # identical symbol
+                new_string = 'identical (' + string_1[i - 1] + '); ' + new_string
+                i -= 1
+                j -= 1
+            elif matrix_operations[i, j] == 2:  # remove
+                new_string = 'remove(' + string_1[i - 1] + '); ' + new_string
+                i -= 1
+            elif matrix_operations[i, j] == 3:  # insert
+                new_string = 'insert(' + string_2[j - 1] + '); ' + new_string
+                j -= 1
+            elif matrix_operations[i, j] == 4:  # replace
                 new_string = 'replace(' + string_1[i - 1] + ' by ' + string_2[j - 1] + '); ' + new_string
-            i -= 1
-            j -= 1
+                i -= 1
+                j -= 1
     return new_string
 
 
