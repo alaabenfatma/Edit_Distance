@@ -30,7 +30,7 @@ def bounded_ed(a, b, currentDistance, lowerBound):
         return n + currentDistance
     if (a[-1] == b[-1]):
         return bounded_ed(
-            a[:- 1], b[:- 1], currentDistance+1,
+            a[:- 1], b[:- 1], currentDistance,
             lowerBound)
     else:
 
