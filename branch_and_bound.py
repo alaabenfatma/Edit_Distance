@@ -28,15 +28,18 @@ def bounded_ed(a, b, currentDistance, lowerBound):
         return m + currentDistance
     if (m == 0):
         return n + currentDistance
+    if (a[-1] == b[-1]):
+        return bounded_ed(
+            a[:- 1], b[:- 1], currentDistance+1,
+            lowerBound)
+    else:
 
-    replace = 0 if (a[-1] == b[-1]) else 1
-
-    insertionBranch = bounded_ed(a[:n - 1], b, currentDistance + 1, lowerBound)
-    deletionBranch = bounded_ed(a, b[:m - 1], currentDistance + 1,
-                                min(insertionBranch, lowerBound))
-    replaceBranch = bounded_ed(
-        a[:n - 1], b[:m - 1], currentDistance + replace,
-        min(insertionBranch, deletionBranch, lowerBound))
+        insertionBranch = bounded_ed(a[:n - 1], b, currentDistance + 1, lowerBound)
+        deletionBranch = bounded_ed(a, b[:m - 1], currentDistance + 1,
+                                    min(insertionBranch, lowerBound))
+        replaceBranch = bounded_ed(
+            a[:n - 1], b[:m - 1], currentDistance + 1,
+            min(insertionBranch, deletionBranch, lowerBound))
     return min(insertionBranch, deletionBranch, replaceBranch)
 
 
