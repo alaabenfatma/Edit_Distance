@@ -34,7 +34,7 @@ def greedy_approach(s1, s2):
 
 
 if __name__ == '__main__':
-    str1 = generator.randomword(10)
-    str2 = generator.randomword(15)
+    str1 = generator.randomword(30)
+    str2 = generator.randomword(30)
     print(f'Approximating edit distance by greedy approach between "{str1}" and "{str2}"')
     print(greedy_approach(str1,str2))
