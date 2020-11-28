@@ -14,9 +14,6 @@ def randomword(n=0):
     '''
     return ''.join(random.choice(string.ascii_lowercase) for i in range(n))
 
-def randomword_alphabet(n,alphabet):
-    return ''.join(random.choices(alphabet, k=n))
-
 
 def generate_file(filename='data.txt', n=0):
     '''
@@ -31,9 +28,3 @@ def generate_file(filename='data.txt', n=0):
 
 if __name__ == "__main__":
     generate_file(sys.argv[1], sys.argv[2])
-    
-    '''
-    eg of usage of randomly generating some words with particular alphabet : in this case A={a,b,c}
-    '''
-    print (randomword_alphabet(10, 'abc'))
-
