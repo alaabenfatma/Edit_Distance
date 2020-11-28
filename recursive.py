@@ -1,7 +1,7 @@
 import generator
 import numpy as np
-str1 = 'QrLZNMZ3Egrd'
-str2 = 'w0T3QpRLGn'
+str1 = 'elH'
+str2 = 'H'
 print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 # replace can cost either 1 (insert a character on top of another) or 2 (remove a character and then insert the new one)
