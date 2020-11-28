@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, json,jsonify
+import recursive
 app = Flask(__name__)
 
 from flask import render_template
@@ -12,4 +13,5 @@ def index(name=None):
 def calculate_ed():
     s1 = request.args.get('s1')
     s2 = request.args.get('s2')
-    return jsonify(result= len(s1))
+    results = recursive.compute(s1,s2)
+    return jsonify(result= results)

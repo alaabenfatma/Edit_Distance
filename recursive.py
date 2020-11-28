@@ -39,25 +39,17 @@ def alignment(s1, s2, mat):
     color_purple = '/'
     color_end = '.'
     final_string = ''
-    
-    
+
     i = len(s1)
     j = len(s2)
-
-    minval = -1
-
     while (i, j) != (0, 0):
-        
         diagonal = mat[i-1, j-1]
         vertical = mat[i-1, j]
         horizontal = mat[i, j-1]
         current_position = mat[i, j]
         print(i,j, [current_position])
         minval = min(diagonal, vertical, horizontal)
-        #print(f'{vertical}vs{current_position}')
         if(vertical>=current_position ):
-            #print(horizontal)
-            
             if(horizontal<current_position):
                 j -= 1
                 final_string = color_green+final_string
@@ -71,7 +63,7 @@ def alignment(s1, s2, mat):
         elif(vertical<current_position):
             i -= 1
             final_string = color_red+final_string
-        print(final_string)
+
     return final_string
 
 def compute(a,b):
@@ -79,8 +71,3 @@ def compute(a,b):
     ed = (ed_with_alignement(a, b, matrix))
     print(matrix)
     return ed, alignment(a, b, matrix)
-if __name__ == "__main__":
-    matrix = prepare_mat(len(str1), len(str2))
-    ed = (ed_with_alignement(str1, str2, matrix))
-    print(f'This program took {i} operations to finish.\nThe minimum edit distance is {ed}')
-    print(alignment(str1, str2, matrix))
