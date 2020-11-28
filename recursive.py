@@ -35,10 +35,11 @@ def ed_with_alignement(s1, s2, mat):
 
 def alignment(s1, s2, mat):
     color_red = '-'
-    color_blue = '+'
+    color_green = '+'
     color_purple = '/'
     color_end = '.'
     final_string = ''
+    
     
     i = len(s1)
     j = len(s2)
@@ -46,29 +47,37 @@ def alignment(s1, s2, mat):
     minval = -1
 
     while (i, j) != (0, 0):
+        
         diagonal = mat[i-1, j-1]
         vertical = mat[i-1, j]
         horizontal = mat[i, j-1]
         current_position = mat[i, j]
+        print(i,j, [current_position])
         minval = min(diagonal, vertical, horizontal)
-        if(minval == vertical):
-            i -= 1
-            final_string += color_red
-        elif minval == diagonal:
-            i -= 1
-            j -= 1
-            if(minval == current_position):
-                final_string += color_end
+        #print(f'{vertical}vs{current_position}')
+        if(vertical>=current_position ):
+            #print(horizontal)
+            
+            if(horizontal<current_position):
+                j -= 1
+                final_string = color_green+final_string
             else:
-                final_string += color_purple
-        elif minval == horizontal:
-            j -= 1
-            final_string += color_blue
+                i-=1
+                j-=1
+                if(mat[i, j]<current_position):
+                    final_string = color_purple+final_string
+                else:
+                    final_string = color_end + final_string
+        elif(vertical<current_position):
+            i -= 1
+            final_string = color_red+final_string
+        print(final_string)
     return final_string
 
 def compute(a,b):
     matrix = prepare_mat(len(a), len(b))
     ed = (ed_with_alignement(a, b, matrix))
+    print(matrix)
     return ed, alignment(a, b, matrix)
 if __name__ == "__main__":
     matrix = prepare_mat(len(str1), len(str2))
