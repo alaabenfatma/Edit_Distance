@@ -71,6 +71,7 @@ def print_path(string_1, string_2, matrix_operations, with_colors=True):
     color_end = '\033[0m'
 
     new_string = ""
+    new_string2 = ""
     i = len(string_1)
     j = len(string_2)
 
@@ -92,25 +93,30 @@ def print_path(string_1, string_2, matrix_operations, with_colors=True):
                 j -= 1
         else:
             if matrix_operations[i, j] == 1:  # identical symbol
+                new_string2 = new_string2+'.'
                 new_string = 'identical (' + string_1[i - 1] + '); ' + new_string
                 i -= 1
                 j -= 1
             elif matrix_operations[i, j] == 2:  # remove
+                new_string2 = new_string2+'-'
                 new_string = 'remove(' + string_1[i - 1] + '); ' + new_string
                 i -= 1
             elif matrix_operations[i, j] == 3:  # insert
+                new_string2 = new_string2+'+'
                 new_string = 'insert(' + string_2[j - 1] + '); ' + new_string
                 j -= 1
             elif matrix_operations[i, j] == 4:  # replace
+                new_string2 = new_string2+'/'
                 new_string = 'replace(' + string_1[i - 1] + ' by ' + string_2[j - 1] + '); ' + new_string
                 i -= 1
                 j -= 1
 
-    return new_string
+    print(new_string)
+    return new_string2[::-1]
 
 
 
 if __name__ == '__main__':
-    string1 = 'hello world'
-    string2 = 'hello boy !'
+    string1 = 'Cat'
+    string2 = 'Carpet'
     print(K_stripes_DP_ED(string1, string2, 1))
