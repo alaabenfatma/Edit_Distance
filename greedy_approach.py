@@ -45,8 +45,8 @@ def greedy_approach(s1, s2):
 
 
 if __name__ == '__main__':
-    str1 = 'ki' #generator.randomword(30)
-    str2 = 'sittinggfhejkzlrtemjryutkreiopzretyrj' #generator.randomword(30)
+    str1 = 'Cat' #generator.randomword(30)
+    str2 = 'Carpet' #generator.randomword(30)
 
 
 
