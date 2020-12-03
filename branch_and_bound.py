@@ -93,12 +93,13 @@ def branch_and_bound(str1, str2):
        We can keep it as it is but rememberif you do that when reading you should start from right to left
     '''
     alignment = list(reversed(table))
-    return ed, alignment
+    alg = ''
+    for c in alignment:
+        alg += str(c)
+    return ed, alg
 
 
+def compute(a,b):
+    return branch_and_bound(a, b)
 
 
-if __name__ == '__main__':
-    str1 = 'cat'
-    str2 = 'carpet'
-    print(branch_and_bound(str1, str2))

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/calculateED.js') }}"></script>
+</head>
+
+<body>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Three buttons in a group -->
+  <div class="btn-group" style="width:100%">
+    <button style="width:33.3%">Compare two strings</button>
+    <button style="width:33.3%">Evaluate the protein dataset</button>
+    <button style="width:33.3%">About</button>
+  </div>
+  <h1>This is an online tool that calculates the Edit Distance between two strings.</h1>
+  <div class="mx-auto" style="width: 200px;">
+  <form  id="ftwoStrings" name="twoStrings" style="margin-left: 10px;">
+
+    <div class="form-group">
+      <label for="s1">First text:</label>
+      <input type="text" class="form-control" id="s1"><br>
+      <label for="s2">Second text:</label>
+      <input type="text" class="form-control" id="s2"><br>
+      <label for="sel1">Select your algorithm:</label>
+      <select class="form-control" id="algos">
+        <option>Recursive algorithm</option>
+        <option>Dynamic programming</option>
+        <option>K-stripe approach</option>
+        <option>Greedy approach <span style="color:orange;font-weight:bold">(Not always optimal)</span></option>
+        <option>Branch and bound algorithm <span style="color:orange;font-weight:bold">(No alignment)</span></option>
+        <option>Divide and conquer algorithm<span style="color:orange;font-weight:bold">(Does not work)</span></option>
+      </select>
+      <br>
+      </div>
+
+      <button id='calculate_ed' type="button"  class="btn btn-primary">Calculate ED</button>
+      
+    </form>
+    <div id='results'></div>
+    <div id='deleted'></div>
+</div>
+
+</body>
+
+</html>
