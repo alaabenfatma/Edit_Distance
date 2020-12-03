@@ -7,10 +7,10 @@ var longest = function(a,b){
     else
         return b;
 }
-var removefrom = function(string,c){
-    while(string.indexOf(c)!=-1)
-        string = string.replace(c, '')
-    return string;
+var removefrom = function(s,c){
+    while(s.indexOf(c)!=-1)
+        s = s.toString().replace(c, '')
+    return s;
 }
 $(document).ready(function () {
     $(document).on('click', '#calculate_ed', function () {
@@ -18,12 +18,15 @@ $(document).ready(function () {
         var s2 = $('#s2').val();
         $.getJSON('/calculate_ed', {
             s1: $('#s1').val(),
-            s2: $('#s2').val()
+            s2: $('#s2').val(),
+            algo : $('select#algos').val()
         }, function (data) {
             let alignement = data.result[1];
             $("#results").remove();
+            $("#operations").remove();
             $("#deletions").remove();
             $('#ftwoStrings').append('<div id="results"></div>');
+            $('#ftwoStrings').append('<div id="operations"></div>');
             $('#ftwoStrings').append('<div id="deletions"></div>');
 
             $('#results').append('<p> The edit distance is: ' + data.result[0] + '</p>');
@@ -44,8 +47,23 @@ $(document).ready(function () {
                 j++;
             }
             j = 0;
-            while (j < alignement.length ) {
-                const element = alignement[j];
+            clean_alignement = removefrom(alignement,'-');
+            while (j < clean_alignement.length ) {
+                const element = clean_alignement[j];
+                if (element == '.') {
+                    $('#operations').append('<p style="color:gray;">(Identical ' + s2[j] + ' at : '+j+')</p>');
+                } else if (element == '/') {
+                      $('#operations').append('<p style="color:blue;">(replaced ' + s1[j] +',by ' + s2[j] + ' at : '+j+')</p>');
+                } else if (element == '+') {
+                    $('#operations').append('<p style="color:green;font-weight:bold">(inserted ' + s2[j] + ',from :'+s2+' at : '+j+')</p>');
+                }
+                j++;
+            }
+        
+            j = 0;
+            clean_alignement = removefrom(alignement,'+');
+            while (j < clean_alignement.length ) {
+                const element = clean_alignement[j];
                 if (element == '-') {
                     $('#deletions').append('<p style="color:red;font-weight:red">(' + s1[j] + ', from :'+s1+', at : '+j+')</p>');
                 }
