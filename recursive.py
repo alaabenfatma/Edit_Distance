@@ -1,7 +1,9 @@
 import generator
 import numpy as np
+
 str1 = 'x'
 str2 = 'y'
+
 print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 # replace can cost either 1 (insert a character on top of another) or 2 (remove a character and then insert the new one)
@@ -9,6 +11,7 @@ replace_add_cost = 0  # case where replace is 1 operation (= 1 otherwise)
 
 
 def prepare_mat(n, m):
+
     A = np.zeros((n+1,m+1))
     for i in range(0,n+1):
         A[i,0]=i
@@ -37,6 +40,7 @@ def ed_with_alignement(s1, s2, mat):
 
 
 def alignment(s1, s2, mat):
+
     color_red = '-'
     color_green = '+'
     color_purple = '/'
