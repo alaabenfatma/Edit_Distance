@@ -1,7 +1,7 @@
 import generator
 import numpy as np
-str1 = 'QrLZNMZ3Egrd'
-str2 = 'w0T3QpRLGn'
+str1 = 'x'
+str2 = 'y'
 print(f'Calculating edit distance between "{str1}" and "{str2}"')
 
 # replace can cost either 1 (insert a character on top of another) or 2 (remove a character and then insert the new one)
@@ -9,9 +9,12 @@ replace_add_cost = 0  # case where replace is 1 operation (= 1 otherwise)
 
 
 def prepare_mat(n, m):
-    mat = np.full((n+1, m+1), float('inf'))
-    mat[0, 0] = 0
-    return mat
+    A = np.zeros((n+1,m+1))
+    for i in range(0,n+1):
+        A[i,0]=i
+        for j in range(i,m+1):
+            A[i,j]=j
+    return A
 
 #operations counter
 i = 0
@@ -43,27 +46,25 @@ def alignment(s1, s2, mat):
     i = len(s1)
     j = len(s2)
     while (i, j) != (0, 0):
-        diagonal = mat[i-1, j-1]
-        vertical = mat[i-1, j]
-        horizontal = mat[i, j-1]
-        current_position = mat[i, j]
-        print(i,j, [current_position])
-        minval = min(diagonal, vertical, horizontal)
-        if(vertical>=current_position ):
-            if(horizontal<current_position):
-                j -= 1
-                final_string = color_green+final_string
-            else:
-                i-=1
-                j-=1
-                if(mat[i, j]<current_position):
-                    final_string = color_purple+final_string
+            vertical = mat[i-1, j]
+            horizontal = mat[i, j-1]
+            current_position = mat[i, j]
+            print(i,j, [current_position])
+            if(vertical>=current_position ):
+                if(horizontal<current_position):
+                    j -= 1
+                    final_string = color_green+final_string
                 else:
-                    final_string = color_end + final_string
-        elif(vertical<current_position):
-            i -= 1
-            final_string = color_red+final_string
-
+                    i-=1
+                    j-=1
+                    if(mat[i, j]<current_position):
+                        final_string = color_purple+final_string
+                    else:
+                        final_string = color_end + final_string
+            elif(vertical<current_position):
+                i -= 1
+                final_string = color_red+final_string
+            
     return final_string
 
 def compute(a,b):
@@ -71,3 +72,5 @@ def compute(a,b):
     ed = (ed_with_alignement(a, b, matrix))
     print(matrix)
     return ed, alignment(a, b, matrix)
+
+print(compute(str1,str2))
