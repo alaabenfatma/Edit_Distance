@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, json,jsonify
-import recursive
+import greedy_approach, recursive
 app = Flask(__name__)
 
 from flask import render_template
@@ -14,4 +14,5 @@ def calculate_ed():
     s1 = request.args.get('s1')
     s2 = request.args.get('s2')
     results = recursive.compute(s1,s2)
+    #results = greedy_approach.greedy_approach(s1,s2)
     return jsonify(result= results)
