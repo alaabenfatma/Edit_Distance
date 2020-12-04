@@ -13,6 +13,7 @@ def K_stripes_DP_ED(string_1, string_2, K):
 
     n = len(string_1)
     m = len(string_2)
+    K = K + abs(n - m)
 
     # row string2, column string1
     edit_distance = np.ones((n + 1, m + 1)) * inf
