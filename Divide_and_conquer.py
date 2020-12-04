@@ -204,21 +204,21 @@ def print_path(string_1, string_2, path) :
     ed=0
     def replace(i,j):
         nonlocal newstring,ed
-        newstring += f"/{string_2[j]}"
+        newstring += "/"
         ed+=1
         return [i+1,j+1]
     def do_nothing(i,j):
         nonlocal newstring
-        newstring += f".{string_1[i]}"
+        newstring += "."
         return [i+1,j+1]
     def insert(i,j):
         nonlocal newstring,ed
-        newstring += f"+{string_2[j]}"
+        newstring += "+"
         ed+=1
         return [i,j+1]
     def remove(i,j):
         nonlocal newstring,ed
-        newstring += f"-{string_1[i]}"
+        newstring += "-"
         ed+=1
         return [i+1,j]
     
