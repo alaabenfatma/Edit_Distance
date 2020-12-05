@@ -4,7 +4,7 @@ Things to keep in mind:
     - if the currentDistance reaches, somehow, the length of the longest string, we break out of the function.
 '''
 '''
-i = 0
+
 
 k = max(len(str1), len(str2))'''
 '''
@@ -17,12 +17,14 @@ insert_table = [0] * k
 delete_table = [0] * k
 replace_table = [0] * k
 table = [0] * k #the table where i will store the operation chosen at each bound (node)'''
-
+j = 0
+i = 0
 def bounded_ed(a, b, currentDistance, lowerBound, insert_table, delete_table, replace_table, table, i):
     """
     Edit distance - but bounded.
     """
-    i += 1
+    global j
+    j += 1
     n = len(a)
     m = len(b)
 
@@ -73,7 +75,6 @@ def bounded_ed(a, b, currentDistance, lowerBound, insert_table, delete_table, re
 
 
 def branch_and_bound(str1, str2):
-    i = 0
     k = max(len(str1), len(str2))
     '''
     -the first 3 table are here for the sake of understanding the problem
@@ -92,6 +93,7 @@ def branch_and_bound(str1, str2):
        We need to reverse the printage of the table to read from left to right
        We can keep it as it is but rememberif you do that when reading you should start from right to left
     '''
+    print(i)
     alignment = list(reversed(table))
     alg = ''
     for c in alignment:
@@ -103,3 +105,4 @@ def compute(a,b):
     return branch_and_bound(a, b)
 
 
+print(compute('cat','carpet'), j)

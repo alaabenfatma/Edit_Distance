@@ -140,7 +140,7 @@ def set_path(string_1, string_2, edit_distance, with_colors=True, fill_path_back
         elif edit_distance[i,j] == edit_distance[i-1,j] + 1:  # case: remove
             new_string = color_purple + "_" + color_end + new_string
             if ( fill_path_backwards == True ) :
-                path[row_backwards-1 ,row_backwards]=1
+                path[row_backwards-1 ,column_backwards]=1
             else: 
                 path[row_forwards-1,column_forwards]=1
             i -= 1
@@ -149,7 +149,7 @@ def set_path(string_1, string_2, edit_distance, with_colors=True, fill_path_back
         elif edit_distance[i,j] == edit_distance[i,j-1] + 1:  # case: insert
             new_string = color_blue + string_2[j - 1] + color_end + new_string
             if ( fill_path_backwards == True ) :
-                path[column_backwards , column_backwards-1]=1
+                path[row_backwards , column_backwards-1]=1
             else: 
                 path[row_forwards,column_forwards-1]=1
             j -= 1
@@ -191,7 +191,7 @@ def divide_and_conquer_rec(string_1, string_2, fill_path_backwards=False,offset_
         row_index = -1-(mat_back.shape[0]-1 - min_index)  
         #print("col index: " + str(col_index) + " / row index " + str(row_index) )
         path[row_index+offset_left[0], col_index+offset_left[1]] = 2
-    #print("min ind: " + str(min_index))
+    #print("min ind: " + str(min_index) + "for CB : " + str(string_1) + ", " + str(string_2))
 
     #callback D&Q over the two diagonal submatrices
     divide_and_conquer_rec( string_1[:min_index], string_2[:int(n/2)], False, offset_right, new_offset_left.copy() )
@@ -240,19 +240,15 @@ def print_path(string_1, string_2, path) :
             i,j = func(i,j)
     return (ed, newstring)
      
-def divide_and_conquer(string_1, string_2):
+def divide_and_conquer(a, b):
     #possible paths are turned into '1's in this matrice
     global path
-    path = np.zeros( ( len(string1) + 1, len(string2)+1 ) )
-    divide_and_conquer_rec(string1, string2)
+    path = np.zeros( ( len(a) + 1, len(b)+1 ) )
+    divide_and_conquer_rec(a, b)
     #print(path)
-    return print_path(string1,string2,path)
+    return print_path(a,b,path)
 
-if __name__ == '__main__':
-    string1 = 'cat'  #string 1 in rows
-    string2 = 'carpet'
-    print( divide_and_conquer(string1, string2) )
-    #print( dynamic_programming(string1, string2) )
+
     
     
     
