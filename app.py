@@ -4,6 +4,7 @@ import greedy
 import recursive
 import dynamic
 import branch_and_bound
+import divide_and_conquer
 app = Flask(__name__)
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -33,6 +34,6 @@ def calculate_ed():
     elif('Branch and bound algorithm' in algo):
         results = branch_and_bound.compute(s1,s2)
     elif('Divide and conquer algorithm' in algo):
-        pass
+        results = divide_and_conquer(s1,s2)
     print(results)
     return jsonify(result=results)
