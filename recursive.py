@@ -68,10 +68,10 @@ def alignment(s1, s2, mat):
             elif(vertical<current_position):
                 i -= 1
                 final_string = color_red+final_string
-            
     return final_string
 
 def compute(a,b):
+    print('Please run the UI for a better experience and to visualize the alignment.')
     matrix = prepare_mat(len(a), len(b))
     ed = (ed_with_alignement(a, b, matrix))
     print(matrix)

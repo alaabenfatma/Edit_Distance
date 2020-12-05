@@ -4,6 +4,7 @@ import greedy
 import recursive
 import dynamic
 import branch_and_bound
+import k_stripes
 app = Flask(__name__)
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -27,7 +28,7 @@ def calculate_ed():
     elif(algo == 'Dynamic programming'):
         results = dynamic.compute(s1, s2)
     elif(algo == 'K-stripe approach'):
-        pass
+        results = k_stripes.compute(s1,s2)
     elif('Greedy approach' in algo):
         results = greedy.compute(s1, s2)
     elif('Branch and bound algorithm' in algo):
