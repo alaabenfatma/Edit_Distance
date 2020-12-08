@@ -6,10 +6,10 @@ import time
 import matplotlib.pyplot as plt
 
 import dynamic_programming_ED as dp
-import naive_recursive as re
+import recursive as re
 import branch_and_bound as bb
 #import divide_and_conquer as dc
-import greedy_approach as ga
+import greedy as ga
 import k_stripes_dynamic_programming as kdp
 
 
