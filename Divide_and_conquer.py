@@ -1,4 +1,5 @@
 import numpy as np
+import multiprocessing as mp
 
 
 def dynamic_programming(string_1, string_2, fill_path_backwards=False, offset_right = np.array([0,0]), offset_left = np.array([0,0]) ):
@@ -20,25 +21,25 @@ def dynamic_programming_forward(string_1, string_2, k):
     # row string2, column string1
     edit_distance = np.zeros(
         (m + 1, k + 1))
-    edit_distance[::, 0] = range(
-        0, m + 1)  # first column
-    edit_distance[0, ::] = range(
-        0, k + 1)  # first row
+    edit_distance[::, 0] = range(0, m + 1)  # first column
+    edit_distance[0, ::] = range(0, k + 1)  # first row
 
     for i in range(1, m + 1):
         for j in range(1, k + 1):
             if string_1[i - 1] == string_2[j - 1]:
                 # this is true because no adjacent elements by row/column
-                edit_distance[i,
-                              j] = edit_distance[i - 1, j - 1]
+                edit_distance[i,j] = edit_distance[i - 1, j - 1]
                 #have difference >1, so this is always the min
                 #when two characters are the same
             else:
                 edit_distance[i, j] = 1 + min(edit_distance[i - 1, j],  # remove
                                               edit_distance[i, j - 1], # insert
                                               edit_distance[i - 1, j - 1])  # replace
-
+    
     return edit_distance
+
+def dynamic_programming_forward_queue(string_1, string_2, k, q):
+    q.put( dynamic_programming_forward(string_1, string_2, k) )
 
 def dynamic_programming_backward(string_1, string_2, k):
     """
@@ -60,13 +61,14 @@ def dynamic_programming_backward(string_1, string_2, k):
                                                                   #when two characters are the same
             else:
                 edit_distance[i, j] = 1 + min(edit_distance[i+1, j],  # remove
-                                              # insert
-                                              edit_distance[i, j+1],
+                                              edit_distance[i, j+1],   # insert
                                               edit_distance[i+1, j+1])  # replace
 
     return edit_distance
 
-# print path can be prettier
+def dynamic_programming_backward_queue(string_1, string_2, k, q):
+    q.put( dynamic_programming_backward(string_1, string_2, k) )
+
 def set_path(string_1, string_2, edit_distance, with_colors=True, fill_path_backwards=False, offset_right = np.array([0,0]), offset_left = np.array([0,0])):
     """
     red means replace
@@ -98,7 +100,7 @@ def set_path(string_1, string_2, edit_distance, with_colors=True, fill_path_back
         column_forwards = j + offset_right[1]
         column_backwards =  -1 - (len(string_2)-j) + offset_left[1]
 
-        #small optimization, if either one of the strings is empty, just insert/delete the whole thing
+        # if either one of the strings is empty, just insert/delete the whole thing
         if (i == 0): #case: we do j insertions and end the while loop
             for k in range(j,0,-1): 
                 new_string = color_blue + string_2[k - 1] + color_end + new_string
@@ -156,24 +158,30 @@ def set_path(string_1, string_2, edit_distance, with_colors=True, fill_path_back
             
     return new_string
 
-def divide_and_conquer_rec(string_1, string_2, fill_path_backwards=False,offset_right = np.array([0,0]), offset_left = np.array([0,0])):
+def divide_and_conquer_rec(string_1, string_2, fill_path_backwards=False,offset_right = np.array([0,0]), offset_left = np.array([0,0]), multiproc = False):
     m = len(string_1)
     n = len(string_2)
     
-
     #stopping condition
     if ( m < 2 or n < 2):
         dynamic_programming(string_1, string_2, fill_path_backwards, offset_right, offset_left )
-        #path[0,0] = 1 
-        #path[-1,-1] = 1
         return
 
-    mat_for = dynamic_programming_forward(string_1, string_2, int(n/2) ) 
-    #print(mat_for)
+    if ( multiproc == False ):
+        mat_for = dynamic_programming_forward(string_1, string_2, int(n/2) ) 
+        # add 1 if n is unpair, so that both matrices have a shared column
+        mat_back = dynamic_programming_backward(string_1, string_2, int(n/2) + (n%2) ) 
+    else :
+        
+        p1 = mp.Process( target=dynamic_programming_forward_queue, args=(string_1,string_2, int(n/2), q1) )
+        p2 = mp.Process( target=dynamic_programming_backward_queue, args=(string_1,string_2, int(n/2)+ (n%2), q2) )
+        p1.start() #start both processes concurrently
+        p2.start()
+        p1.join() #wait until both of them are finished to get the halves
+        p2.join()
+        mat_for = q1.get()  
+        mat_back = q2.get()
 
-    # add 1 if n is unpair, so that both matrices have a shared column
-    mat_back = dynamic_programming_backward(string_1, string_2, int(n/2) + (n%2) ) 
-    #print (mat_back)
     column =  mat_for[::, int(n/2)] + mat_back[::, 0]
 
     #the first index for which the sum of c+g is minimal
@@ -189,15 +197,11 @@ def divide_and_conquer_rec(string_1, string_2, fill_path_backwards=False,offset_
         path[min_index+offset_right[0], int(n/2)+offset_right[1]] = 2
     else:
         row_index = -1-(mat_back.shape[0]-1 - min_index)  
-        #print("col index: " + str(col_index) + " / row index " + str(row_index) )
         path[row_index+offset_left[0], col_index+offset_left[1]] = 2
-    #print("min ind: " + str(min_index) + "for CB : " + str(string_1) + ", " + str(string_2))
 
     #callback D&Q over the two diagonal submatrices
-    divide_and_conquer_rec( string_1[:min_index], string_2[:int(n/2)], False, offset_right, new_offset_left.copy() )
-    divide_and_conquer_rec( string_1[min_index:], string_2[int(n/2):], True , new_offset_right.copy(), offset_left )
-    #print( "first CB: (" + string_1[:min_index] +","+ string_2[:int(n/2)]+")")
-    #print( "second CB: (" + string_1[min_index:] +","+ string_2[int(n/2):]+")")
+    divide_and_conquer_rec( string_1[:min_index], string_2[:int(n/2)], False, offset_right, new_offset_left.copy(), multiproc )
+    divide_and_conquer_rec( string_1[min_index:], string_2[int(n/2):], True , new_offset_right.copy(), offset_left, multiproc )
 
 def print_path(string_1, string_2, path) :
     newstring = ""
@@ -240,18 +244,22 @@ def print_path(string_1, string_2, path) :
             i,j = func(i,j)
     return (ed, newstring)
      
-def divide_and_conquer(string_1, string_2):
+def divide_and_conquer(string_1, string_2, multiproc = False):
     #possible paths are turned into '1's in this matrice
     global path
     path = np.zeros( ( len(string1) + 1, len(string2)+1 ) )
-    divide_and_conquer_rec(string1, string2)
-    #print(path)
+    if multiproc : 
+        global q1
+        global q2
+        q1 = mp.Queue()  # create 2 queues, one for each half of the cost matrice
+        q2 = mp.Queue()
+    divide_and_conquer_rec(string1, string2, multiproc = multiproc)
     return print_path(string1,string2,path)
 
 if __name__ == '__main__':
     string1 = 'cat'  #string 1 in rows
     string2 = 'carpet'
-    print( divide_and_conquer(string1, string2) )
+    print( divide_and_conquer(string1, string2, multiproc=True) )
     #print( dynamic_programming(string1, string2) )
 
     
